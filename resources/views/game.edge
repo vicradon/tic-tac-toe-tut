@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title></title>
+  {{ style('vendor/bootstrap.min.css') }}
+  {{ style('css/game') }}
+  {{ style('css/loading-screen') }}
+  <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+</head>
+<body>
+  <div class="wrap">
+    <div class="loading">
+      <div class="bounceball"></div>
+      <div class="text">SETTING THINGS UP</div>
+    </div>
+  </div>
+
+  
+  <div class="row ">
+    <div class="col-md-9 board__main">
+      <h1 class="header">Tic Tac Toe</h1>
+
+      <div id="turn-notification-message" class="board___player-turn"></div>
+
+      <div class="board__container">
+        <div class="board__cell">
+          <div class="letter" data-id="0"></div>
+        </div>
+        <div class="board__cell">
+          <div class="letter" data-id="1"></div>
+        </div>
+        <div class="board__cell">
+          <div class="letter" data-id="2"></div>
+        </div>
+
+        <div class="board__cell">
+          <div class="letter" data-id="3"></div>
+        </div>
+        <div class="board__cell">
+          <div class="letter" data-id="4"></div>
+        </div>
+        <div class="board__cell">
+          <div class="letter" data-id="5"></div>
+        </div>
+
+        <div class="board__cell">
+          <div class="letter" data-id="6"></div>
+        </div>
+        <div class="board__cell">
+          <div class="letter" data-id="7"></div>
+        </div>
+        <div class="board__cell">
+          <div class="letter" data-id="8"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mt-5">
+      <div class="d-flex">
+        <p>{{player1_username}}</p>
+        <p id="player1_score" class="ms-3">{{player1_score}}</p>
+      </div>
+      <div class="d-flex">
+        <p>{{player2_username}}</p>
+        <p id="player2_score" class="ms-3">{{player2_score}}</p>
+      </div>
+      
+      <button id="rematch-button" type="submit" class="btn btn-primary d-none">Rematch</button>
+    </div>
+
+    <div class="reset reset--hidden">
+      <div class="reset__text">
+      </div>
+      <button class="rematch-btn" value="rematch">
+        <span class="clear-board">Clear Board</span>
+      </button>
+    </div>  
+</div>
+
+ 
+  
+<!-- Modal -->
+<div class="modal fade" id="play-again-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hi {{username}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <strong><span id="other-player-username"></span></strong> <span>is requesting a rematch</span>
+      </div>
+      <div class="modal-footer">
+        <button id="i-am-done-playing" type="button" class="btn btn-secondary" data-bs-dismiss="modal">I'll pass</button>
+        <button id="lets-play-again" type="button" class="btn btn-primary">Let's do this!</button>
+      </div>
+    </div>
+  </div>
+</div>
+  {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+  {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+  {{ script('vendor/bootstrap.bundle.min.js') }}
+  {{ script('js/game.js') }}
+</body>
+</html>

@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 module.exports = {
   /*
@@ -27,8 +27,7 @@ module.exports = {
     | }
     |
     */
-    directives: {
-    },
+    directives: {},
     /*
     |--------------------------------------------------------------------------
     | Report only
@@ -64,7 +63,7 @@ module.exports = {
     | if you want to know the behavior. https://github.com/helmetjs/helmet/pull/82
     |
     */
-    disableAndroid: true
+    disableAndroid: true,
   },
 
   /*
@@ -80,7 +79,7 @@ module.exports = {
   */
   xss: {
     enabled: true,
-    enableOnOldIE: false
+    enableOnOldIE: false,
   },
 
   /*
@@ -95,7 +94,7 @@ module.exports = {
   |
   | Learn more at https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
   */
-  xframe: 'DENY',
+  xframe: "DENY",
 
   /*
   |--------------------------------------------------------------------------
@@ -133,13 +132,13 @@ module.exports = {
   */
   csrf: {
     enable: false,
-    methods: ['POST', 'PUT', 'DELETE'],
+    methods: ["POST", "PUT", "DELETE"],
     filterUris: [],
     cookieOptions: {
       httpOnly: false,
       sameSite: true,
-      path: '/',
-      maxAge: 7200
-    }
-  }
-}
+      path: "/",
+      maxAge: 7200,
+    },
+  },
+};

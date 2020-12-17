@@ -16,23 +16,14 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use("Route");
 
-Route.on("/").render("welcome");
+// Route.get("/", "HomeController.index").as("home");
+Route.get("/", "HomeController.index").as("home");
+Route.post("/", "UserController.register").as("register");
+Route.post("/logout", "UserController.logout").as("logout");
 
-Route.group(() => {
-  Route.post("register", "UserController.register").middleware("guest");
-  Route.post("login", "UserController.login").middleware("guest");
+Route.patch("/socket-id", "UserController.setSocketId");
 
-  Route.get("/users/profile", "UserController.show").middleware(["auth"]);
-  Route.patch("/users/profile", "UserController.updateProfile").middleware([
-    "auth",
-  ]);
-  Route.patch("/users/email", "UserController.updateEmail").middleware([
-    "auth",
-  ]);
-  Route.patch("/users/password", "UserController.updatePassword").middleware([
-    "auth",
-  ]);
-
-  Route.resource("courses", "CourseController").apiOnly().middleware(["auth"]);
-
-}).prefix("api/v1");
+Route.get("/game", "GameController.index").as("game");
+Route.post("/game", "GameController.contactPlayer1");
+Route.get("/game/code", "GameController.generateGameCode");
+Route.get("/game/variables", "UserController.getInitialVariables");

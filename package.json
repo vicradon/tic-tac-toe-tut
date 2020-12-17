@@ -1,20 +1,19 @@
 {
-  "name": "adonis-fullstack-app",
+  "name": "tic-tac-toe-tut",
   "version": "4.1.0",
   "adonis-version": "4.1.0",
-  "description": "The fullstack application boilerplate for Adonisjs",
+  "description": "Multiplayer tic-tac-toe built with AdonisJS Websockets",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test",
-    "show-tables": "sqlite /home/vicradon/Documents/codes/resume-projects/cgpa-api/database/adonis.sqlite"
+    "test": "node ace test"
   },
   "keywords": [
     "adonisjs",
     "adonis-app"
   ],
   "author": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@adonisjs/ace": "^5.0.8",
@@ -25,11 +24,12 @@
     "@adonisjs/framework": "^5.0.9",
     "@adonisjs/ignitor": "^2.0.8",
     "@adonisjs/lucid": "^6.1.3",
+    "@adonisjs/redis": "^2.0.7",
     "@adonisjs/session": "^1.0.27",
     "@adonisjs/shield": "^1.0.8",
     "@adonisjs/validator": "^5.0.6",
     "@adonisjs/websocket": "^1.0.12",
-    "sqlite3": "^5.0.0"
+    "nanoid": "^3.1.20"
   },
   "devDependencies": {},
   "autoload": {

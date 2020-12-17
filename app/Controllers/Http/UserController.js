@@ -1,92 +1,79 @@
 "use strict";
 
-const User = use('App/Models/User');
+const Redis = use("Redis");
 const { validateAll } = use("Validator");
-
 class UserController {
-  async register({ auth, request, response }) {
+  async register({ request, response, session }) {
     try {
-      const { email, password } = request.all();
+      const { username } = request.all();
 
-      const rules = {
-        email: "required|email|unique:users,email",
-        password: "required|min:8",
-      };
-      const validation = await validateAll(request.all(), rules);
-
-      if (validation.fails()) {
-        return response.status(400).send(validation.messages());
+      const userExists = await Redis.exists(username);
+      if (userExists) {
+        session.flash({ error: `${username} already taken, choose another` });
+        return response.redirect("back");
       }
 
-      const user = await User.create({
-        email,
-        password,
+      session.flash({ success: "Account created successfully" });
+      response.cookie("username", username);
+
+      return response.redirect("back");
+    } catch (error) {
+      session.flash({ error: error.message });
+      console.error({ "registeration error": error });
+
+      return response.redirect("back");
+    }
+  }
+
+  async logout({ response, session, request }) {
+    try {
+      const { username } = request.all();
+      await Redis.del(username);
+
+      response.clearCookie("username");
+      return response.redirect("/");
+    } catch (error) {
+      session.flash({ error: error.message });
+      return response.redirect("back");
+    }
+  }
+  async setSocketId({ request, response }) {
+    try {
+      const { socket_id } = request.all();
+
+      const username = request.cookie("username");
+      await Redis.hset(username, "socket_id", socket_id);
+
+      return response.ok("set socket id");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async getInitialVariables({ request, response }) {
+    try {
+      const username = request.cookie("username");
+      const game_code = await Redis.hget(username, "game_code");
+      // [player_stats, next_player]
+      const initialVars = await Redis.hmget(
+        game_code,
+        `${username}_stats`,
+        "next_player"
+      );
+
+      const { mark, player_id, other_player } = JSON.parse(initialVars[0]);
+      const next_player = initialVars[1];
+      const canMove = player_id === next_player;
+
+      return response.ok({
+        player_mark: mark,
+        canMove,
+        other_player,
+        my_username: username,
       });
-
-      const authedUser = await auth.withRefreshToken().attempt(email, password);
-      return response.status(201).send(authedUser);
     } catch (error) {
-      console.log(error);
-      return response.status(500).send(error);
+      console.error(error);
     }
   }
-
-  async login({ auth, request, response }) {
-    try {
-      const { email, password } = request.all();
-      const rules = {
-        email: "required|email",
-        password: "required|min:8",
-      };
-      const validation = await validateAll(request.all(), rules);
-
-      if (validation.fails()) {
-        return response.status(400).send(validation.messages());
-      }
-      const authedUser = await auth.withRefreshToken().attempt(email, password);
-
-      return response.status(200).send(authedUser);
-    } catch (error) {
-      return response.status(404).send(error);
-    }
-  }
-
-
-  async show({ auth, response }) {
-    try {
-      const user = await auth.user;
-      return response.status(200).send(user);
-    } catch (error) {
-      return response.status(500).send(error);
-    }
-  }
-
-
-  async updateProfile({ auth, request, response }) {
-    try {
-      const { firstName, lastName } = request.all();
-      const rules = {
-        firstName: "required",
-        lastName: "required",
-      };
-      const validation = await validateAll(request.all(), rules);
-
-      if (validation.fails()) {
-        return response.status(400).send(validation.messages());
-      }
-
-      const user = await auth.user;
-      user.firstName = firstName;
-      user.lastName = lastName;
-
-      await user.save();
-      return response.status(200).send(user);
-    } catch (error) {
-      return response.status(500).send(error);
-    }
-  }
-
-
 }
 
 module.exports = UserController;

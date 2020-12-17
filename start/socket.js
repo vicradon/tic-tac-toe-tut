@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,6 @@
 |
 */
 
-const Ws = use('Ws')
+const Ws = use("Ws");
 
-Ws.channel('chat', 'ChatController')
+Ws.channel("tic-tac-toe", "TicTacToeController");

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+  <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+  {{ style('vendor/bootstrap.min.css') }}
+  {{ style('css/home') }}
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="header">Tic Tac Toe</h1>
+            <h5>Enjoy realtime gaming with your friends</h5>
+        </div>
+    </div>
+    
+    @set('username', request.cookie('username'))
+    
+    <div class="container">
+        @if(flashMessage('error'))
+            <div id="error-alert" class="alert alert-danger" role="alert">
+                {{ flashMessage('error') }}
+            </div>
+        @endif
+        @if(flashMessage('success'))
+            <div id="success-alert" class="alert alert-success" role="alert">
+                {{ flashMessage('success') }}
+            </div>
+        @endif
+        <div class="row justify-content-between">
+            @if(username)
+            <div class="col-md-6 mb-5">
+                <h2> Hi {{ username }} </h2>
+
+                <div>
+                    <form method="POST"  class="mt-4" action="/logout">
+                        {{ csrfField() }}
+                        <input type="hidden" name="username" value="{{username}}">
+                        <button class="btn btn-secondary" type="submit">Reset username</button>
+                    </form>
+                </div>
+            </div>
+            @else
+            <div class="col-md-6 mb-5">
+                <div id="register-container">
+                    <h4>Set username</h4>
+                
+                    <form action="/" method="POST" id="register-form">
+                        {{ csrfField() }}
+                        <div class="row mb-3">
+                            <label for="username" class="col-sm-2 col-form-label">Username</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" value="{{ old('username', '') }}" id="username" name="username">
+                            </div>
+                        </div>
+                        @if(hasErrorFor('username'))
+                            <div class="text-danger">
+                                {{ getErrorFor('username')  }}
+                            </div>
+                        @endif
+                        
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            @endif
+            <div class="col-md-6 mb-5">
+                <h4>Join a game with code</h4>
+                @if(username)
+                <div class="mb-3">
+                   <form class="mb-4" action="/game" method="POST">
+                        {{ csrfField() }}
+                        <div class="row mb-3">
+                            <label for="game_code_input" class="col-sm-3 col-form-label">Game Code</label>
+                            <div class="col-sm-9">
+                                <input required type="text" class="form-control" id="game_code_input" name="game_code" placeholder="e.g. 52dui">
+                                @if(hasErrorFor('game_code'))
+                                <div class="text-danger">
+                                    {{ getErrorFor('game_code')  }}
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Join</button>
+                    </form>
+
+                     <!-- generate game code area  -->
+                     <div>
+                        @if(game_code)
+                        <p>Share your game code with a friend</p>
+                        <div class="d-flex">
+                            <input id="game-code-input" readonly type="text" value="{{game_code}}" />
+                            <button id="copy-code-button" class="ms-3 btn btn-secondary">Copy</button>
+                        </div>
+                        @else
+                        <form action="/game/code" method="GET">
+                            {{ csrfField() }}
+                            <h5>You can also generate a game code</h5>
+                            <button class="btn btn-secondary" type="submit">Generate Game Code</button>
+                        </form>
+                        @endif
+                    </div>
+                </div>
+                @else
+                <div>
+                    <p>Set username so you can join a game with a code</p>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div id="game-requests" class="mb-5"></div>
+    
+  {{ script('https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js') }}
+  {{ script('https://unpkg.com/@adonisjs/websocket-client@1.0.9/dist/Ws.browser.js') }}
+  {{ script('vendor/bootstrap.bundle.min.js') }}
+  {{ script('vendor/anime.min.js') }}
+  {{ script('js/copy_to_clipboard.js') }}
+  {{ script('js/home.js') }}
+
+</body>
+</html>
