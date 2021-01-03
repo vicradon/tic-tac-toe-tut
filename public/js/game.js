@@ -131,6 +131,7 @@ function subscribeToChannel() {
     updateTurnNotification(
       "It's a draw. Try outsmarting your opponent next time."
     );
+    displayRematchButton();
   });
   game.on("playerWins", (response) => {
     updateBoard(response);
@@ -215,6 +216,9 @@ function updateTurnNotification(msg) {
 
 function displayRematchButton(player) {
   if (player !== my_username) {
+    $("#rematch-button").classList.remove("d-none");
+  }
+  if (!player) {
     $("#rematch-button").classList.remove("d-none");
   }
 }

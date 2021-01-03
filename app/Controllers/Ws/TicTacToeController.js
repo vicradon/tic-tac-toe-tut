@@ -39,8 +39,10 @@ class TicTacToeController {
       );
 
       const board = JSON.parse(gameObject.board);
-      const current_player_mark = JSON.parse(gameObject[`${username}_stats`])
-        .mark;
+      const { mark: current_player_mark } = JSON.parse(
+        gameObject[`${username}_stats`]
+      );
+
       board[Number(cell)] = current_player_mark;
       const { status, player, sequence } = this.checkForWinner(board);
       await Redis.hset(

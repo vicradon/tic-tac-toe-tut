@@ -3,10 +3,11 @@
   "version": "4.1.0",
   "adonis-version": "4.1.0",
   "description": "Multiplayer tic-tac-toe built with AdonisJS Websockets",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test"
+    "test": "node ace test",
+    "dev": "nodemon"
   },
   "keywords": [
     "adonisjs",

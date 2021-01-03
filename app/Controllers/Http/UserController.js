@@ -19,8 +19,6 @@ class UserController {
       return response.redirect("back");
     } catch (error) {
       session.flash({ error: error.message });
-      console.error({ "registeration error": error });
-
       return response.redirect("back");
     }
   }
@@ -28,7 +26,9 @@ class UserController {
   async logout({ response, session, request }) {
     try {
       const { username } = request.all();
+      const game_code = await Redis.hget(username, "game_code");
       await Redis.del(username);
+      await Redis.del(game_code);
 
       response.clearCookie("username");
       return response.redirect("/");
@@ -45,31 +45,6 @@ class UserController {
       await Redis.hset(username, "socket_id", socket_id);
 
       return response.ok("set socket id");
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  async getInitialVariables({ request, response }) {
-    try {
-      const username = request.cookie("username");
-      const game_code = await Redis.hget(username, "game_code");
-      // [player_stats, next_player]
-      const initialVars = await Redis.hmget(
-        game_code,
-        `${username}_stats`,
-        "next_player"
-      );
-
-      const { mark, player_id, other_player } = JSON.parse(initialVars[0]);
-      const next_player = initialVars[1];
-      const canMove = player_id === next_player;
-
-      return response.ok({
-        player_mark: mark,
-        canMove,
-        other_player,
-        my_username: username,
-      });
     } catch (error) {
       console.error(error);
     }

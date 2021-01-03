@@ -110,6 +110,31 @@ class GameController {
       return response.redirect("back");
     } catch (error) {}
   }
+
+  async getInitialVariables({ request, response }) {
+    try {
+      const username = request.cookie("username");
+      const game_code = await Redis.hget(username, "game_code");
+      const initialVars = await Redis.hmget(
+        game_code,
+        `${username}_stats`,
+        "next_player"
+      );
+
+      const { mark, player_id, other_player } = JSON.parse(initialVars[0]);
+      const next_player = initialVars[1];
+      const canMove = player_id === next_player;
+
+      return response.ok({
+        player_mark: mark,
+        canMove,
+        other_player,
+        my_username: username,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 module.exports = GameController;

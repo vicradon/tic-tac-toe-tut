@@ -26,4 +26,4 @@ Route.patch("/socket-id", "UserController.setSocketId");
 Route.get("/game", "GameController.index").as("game");
 Route.post("/game", "GameController.contactPlayer1");
 Route.get("/game/code", "GameController.generateGameCode");
-Route.get("/game/variables", "UserController.getInitialVariables");
+Route.get("/game/variables", "GameController.getInitialVariables");
