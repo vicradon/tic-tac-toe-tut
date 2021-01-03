@@ -142,6 +142,33 @@ function subscribeToChannel() {
     disableBoard();
     displayRematchButton(response.player);
   });
+  game.on("otherPlayerLeft", ({ username }) => {
+    const otherPlayerLeftModal = new bootstrap.Modal(
+      $("#other-player-left-modal")
+    );
+    $("#other-player-left-modal #other-player-username").textContent = username;
+
+    otherPlayerLeftModal.show();
+
+    $("#lets-play-again").onclick = () => {
+      game.emit("playAgain", { status: "accepted" });
+    };
+
+    let elapsedSeconds = 0;
+    setInterval(() => {
+      elapsedSeconds++;
+      $("#other-player-left-modal #elapsed-seconds").textContent =
+        3 - elapsedSeconds;
+
+      if (elapsedSeconds === 3) {
+        window.location.href = "/";
+      }
+    }, 1000);
+
+    $("#i-am-done-playing").onclick = () => {
+      game.emit("playAgain", { status: "rejected" });
+    };
+  });
 }
 
 function makeMove(cell) {

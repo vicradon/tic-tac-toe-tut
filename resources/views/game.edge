@@ -81,12 +81,12 @@
 
  
   
-<!-- Modal -->
-<div class="modal fade" id="play-again-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modals -->
+<div class="modal fade" id="play-again-modal" tabindex="-1" aria-labelledby="play-again-modal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Hi {{username}}</h5>
+        <h5 class="modal-title" id="play-again-modal">Hi {{username}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -95,6 +95,20 @@
       <div class="modal-footer">
         <button id="i-am-done-playing" type="button" class="btn btn-secondary" data-bs-dismiss="modal">I'll pass</button>
         <button id="lets-play-again" type="button" class="btn btn-primary">Let's do this!</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="other-player-left-modal" tabindex="-1" aria-labelledby="other-player-left-modal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="other-player-left-modal">Hi {{username}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <strong><span id="other-player-username"></span></strong> <span>left the game</span>
+        <p><span>You will be redirected home in</span> <span id="elapsed-seconds"></span></p>
       </div>
     </div>
   </div>

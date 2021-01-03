@@ -226,6 +226,11 @@ class TicTacToeController {
       console.error(error);
     }
   }
+
+  async onClose() {
+    const username = this.request.cookie("username");
+    if (!username) return;
+  }
 }
 
 module.exports = TicTacToeController;
