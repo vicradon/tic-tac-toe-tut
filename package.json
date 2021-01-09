@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ace test",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "prod": "ENV_SILENT=true node server.js"
   },
   "keywords": [
     "adonisjs",
