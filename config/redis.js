@@ -11,6 +11,8 @@
 */
 
 const Env = use("Env");
+const Url = require("url-parse");
+const redis_url = new Url(Env.get("REDIS_URL"));
 
 module.exports = {
   /*
@@ -39,14 +41,11 @@ module.exports = {
     keyPrefix: "",
   },
   prod: {
-    host: Env.get("REDIS_HOST"),
-    port: Env.get("REDIS_PORT"),
-    password: Env.get("REDIS_PASSWORD"),
+    host: redis_url.hostname,
+    port: redis_url.port,
+    password: redis_url.password,
     db: 0,
     keyPrefix: "",
-    tls: {
-      host: Env.get("REDIS_HOST"),
-    },
   },
 
   /*
